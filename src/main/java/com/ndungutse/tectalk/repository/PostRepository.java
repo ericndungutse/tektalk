@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ndungutse.tectalk.model.Post;
 
-@Repository
-public interface PostRepository extends JpaRepository<Post, UUID> {
+// @Repository
+public interface PostRepository extends JpaRepository<Post, Long> {
 
 }

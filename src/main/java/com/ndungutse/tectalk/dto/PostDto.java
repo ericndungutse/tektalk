@@ -1,26 +1,16 @@
 package com.ndungutse.tectalk.dto;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 public class PostDto {
-    private UUID id;
+    private Long id;
     private String title;
     private String content;
-    private LocalDateTime createdAt;
+    private String description;
 
-    public PostDto(String title, String content) {
-        this.id = UUID.randomUUID();
-        this.title = title;
-        this.content = content;
-        this.createdAt = LocalDateTime.now();
-    }
-
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -40,17 +30,17 @@ public class PostDto {
         this.content = content;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public String getDesciption() {
+        return description;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
     public String toString() {
-        return "PostDto [id=" + id + ", title=" + title + ", content=" + content + ", createdAt=" + createdAt + "]";
+        return "PostDto [id=" + id + ", title=" + title + ", content=" + content + ", description=" + description + "]";
     }
 
 }

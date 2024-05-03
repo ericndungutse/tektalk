@@ -1,12 +1,12 @@
 package com.ndungutse.tectalk.service;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ndungutse.tectalk.dto.PostDto;
+import com.ndungutse.tectalk.exception.ResourceNotFoundException;
 import com.ndungutse.tectalk.model.Post;
 import com.ndungutse.tectalk.repository.PostRepository;
 
@@ -16,13 +16,57 @@ public class PostService {
     @Autowired
     private PostRepository repository;
 
-    public List<Post> getAllPosts() {
-        return repository.findAll();
+    // Get All Posts
+    public List<PostDto> getAllPosts() {
+        List<Post> posts = repository.findAll();
+
+        List<PostDto> postsDto = posts.stream().map(post -> mapToDto(post)).toList();
+        return postsDto;
     }
 
+    // Create Post
     public PostDto createPost(PostDto postDto) {
-        Post newPost = new Post(postDto.getId(), postDto.getTitle(), postDto.getContent(), postDto.getCreatedAt());
-        repository.save(newPost);
+        // Convert DTO to Post
+        Post post = mapToPost(postDto);
+
+        // Persist into the db
+        Post newPost = repository.save(post);
+
+        // Convert Post to DTO
+        PostDto postResponse = mapToDto(newPost);
+
+        return postResponse;
+    }
+
+    // Get Post By Id
+    public PostDto getPostById(Long id) {
+        // Get Post from db
+        Post post = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+
+        // Map to DTO
+        PostDto postDto = mapToDto(post);
+
         return postDto;
     }
+
+    // Mappers
+    private Post mapToPost(PostDto postDto) {
+        Post post = new Post();
+        post.setTitle(postDto.getTitle());
+        post.setDescription(postDto.getDesciption());
+        post.setContent(postDto.getContent());
+        return post;
+    }
+
+    private PostDto mapToDto(Post post) {
+        PostDto postDto = new PostDto();
+        postDto.setId(post.getId());
+        postDto.setTitle(post.getTitle());
+        postDto.setContent(post.getContent());
+        postDto.setDescription(post.getDescription());
+
+        return postDto;
+
+    }
+
 }

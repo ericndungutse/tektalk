@@ -5,8 +5,11 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 // The annotation @GeneratedValue(generator="UUID")is used
 // in JPA(Java Persistence API)to instruct a persistence provider(like Hibernate)to
@@ -20,36 +23,36 @@ import jakarta.persistence.Table;
 // that a UUID should be generated.
 
 @Entity
-@Table(name = "posts")
+@Table(name = "posts", uniqueConstraints = { @UniqueConstraint(columnNames = { "title" }) })
 public class Post {
     @Id
-    @Column(name = "id", nullable = false)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private String content;
+    @Column(name = "description", nullable = false)
+    private String description;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "content", nullable = false)
+    private String content;
 
     public Post() {
     }
 
-    public Post(UUID id, String title, String content, LocalDateTime createdAt) {
+    public Post(Long id, String title, String content, String description) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.createdAt = createdAt;
+        this.description = description;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -69,17 +72,17 @@ public class Post {
         this.content = content;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
     public String toString() {
-        return "Blog [id=" + id + ", title=" + title + ", content=" + content + ", createdAt=" + createdAt + "]";
+        return "Blog [id=" + id + ", title=" + title + ", description=" + description + ", content=" + content + "]";
     }
 
 }
