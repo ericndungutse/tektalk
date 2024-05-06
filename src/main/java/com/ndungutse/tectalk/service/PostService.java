@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ndungutse.tectalk.dto.PostDto;
+import com.ndungutse.tectalk.dto.PostsResponse;
 import com.ndungutse.tectalk.exception.ResourceNotFoundException;
 import com.ndungutse.tectalk.model.Post;
 import com.ndungutse.tectalk.repository.PostRepository;
@@ -20,16 +21,27 @@ public class PostService {
     private PostRepository repository;
 
     // Get All Posts
-    public List<PostDto> getAllPosts(int pageNo, int pageSize) {
+    public PostsResponse getAllPosts(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
 
         // Page Content object
         Page<Post> posts = repository.findAll(pageable);
 
         // Get Content from page object
-        List<Post> listOfPots = posts.getContent();
+        List<Post> listOfPosts = posts.getContent();
 
-        return listOfPots.stream().map(post -> mapToDto(post)).toList();
+        List<PostDto> listOfPostsDto = listOfPosts.stream().map(post -> mapToDto(post)).toList();
+
+        PostsResponse postsResponse = new PostsResponse();
+
+        postsResponse.setPosts(listOfPostsDto);
+        postsResponse.setPageNo(posts.getNumber());
+        postsResponse.setPageSize(posts.getSize());
+        postsResponse.setTotalElements(posts.getTotalElements());
+        postsResponse.setTotalPages(posts.getTotalPages());
+        postsResponse.setLast(posts.isLast());
+
+        return postsResponse;
 
     }
 
