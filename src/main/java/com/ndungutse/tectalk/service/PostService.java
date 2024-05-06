@@ -41,12 +41,42 @@ public class PostService {
     // Get Post By Id
     public PostDto getPostById(Long id) {
         // Get Post from db
-        Post post = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        Post post = repository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
 
         // Map to DTO
         PostDto postDto = mapToDto(post);
 
         return postDto;
+    }
+
+    // Update Post
+    public PostDto updatePost(PostDto postDto, Long id) {
+        // Get Post from db
+        Post post = repository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+
+        post.setTitle(postDto.getTitle());
+        post.setDescription(postDto.getDesciption());
+        post.setContent(postDto.getContent());
+
+        Post updated_post = repository.save(post);
+
+        // Convert to dto
+
+        return mapToDto(updated_post);
+    }
+
+    // Delete Post
+    public void deletePostById(Long id) {
+        // Get Post from db
+        Post post = repository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+
+        repository.delete(post);
     }
 
     // Mappers
