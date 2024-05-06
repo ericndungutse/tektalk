@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ndungutse.tectalk.dto.PostDto;
@@ -25,8 +26,11 @@ public class PostController {
     private PostService service;
 
     @GetMapping
-    public ResponseEntity<List<PostDto>> getAllPosts() {
-        return new ResponseEntity<>(service.getAllPosts(), HttpStatus.OK);
+    public List<PostDto> getAllPosts(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "2", required = false) int pageSize) {
+
+        return service.getAllPosts(pageNo, pageSize);
     }
 
     @PostMapping

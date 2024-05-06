@@ -3,6 +3,9 @@ package com.ndungutse.tectalk.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ndungutse.tectalk.dto.PostDto;
@@ -17,11 +20,17 @@ public class PostService {
     private PostRepository repository;
 
     // Get All Posts
-    public List<PostDto> getAllPosts() {
-        List<Post> posts = repository.findAll();
+    public List<PostDto> getAllPosts(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
 
-        List<PostDto> postsDto = posts.stream().map(post -> mapToDto(post)).toList();
-        return postsDto;
+        // Page Content object
+        Page<Post> posts = repository.findAll(pageable);
+
+        // Get Content from page object
+        List<Post> listOfPots = posts.getContent();
+
+        return listOfPots.stream().map(post -> mapToDto(post)).toList();
+
     }
 
     // Create Post
