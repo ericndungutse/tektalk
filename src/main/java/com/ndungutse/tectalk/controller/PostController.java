@@ -1,7 +1,6 @@
 package com.ndungutse.tectalk.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ndungutse.tectalk.dto.PostDto;
 import com.ndungutse.tectalk.dto.PostsResponse;
 import com.ndungutse.tectalk.service.PostService;
+import com.ndungutse.tectalk.utils.AppConstants;
 
 @RestController
 @RequestMapping("api/v1/posts")
@@ -27,10 +27,10 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<PostsResponse> getAllPosts(
-            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = "desc", required = false) String sortDir) {
+            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEAFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
 
         return new ResponseEntity<>(service.getAllPosts(pageNo, pageSize, sortBy, sortDir), HttpStatus.OK);
     }
