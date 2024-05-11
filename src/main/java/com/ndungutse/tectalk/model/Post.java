@@ -1,10 +1,15 @@
 package com.ndungutse.tectalk.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -34,6 +39,12 @@ public class Post {
 
     @Column(name = "content", nullable = false)
     private String content;
+
+    // CASCADE>ALL: Any operation to parent is applied to children
+    // Orphan Remove: Remove child if parent removed
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    // No List? It creates duplicate
+    private Set<Comment> comments = new HashSet<>();
 
     public Post() {
     }
@@ -77,9 +88,18 @@ public class Post {
         this.description = description;
     }
 
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
     @Override
     public String toString() {
-        return "Blog [id=" + id + ", title=" + title + ", description=" + description + ", content=" + content + "]";
+        return "Post [id=" + id + ", title=" + title + ", description=" + description + ", content=" + content
+                + ", comments=" + comments + "]";
     }
 
 }
