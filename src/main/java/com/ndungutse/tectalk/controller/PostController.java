@@ -1,8 +1,7 @@
 package com.ndungutse.tectalk.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,9 +28,11 @@ public class PostController {
     @GetMapping
     public ResponseEntity<PostsResponse> getAllPosts(
             @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = "2", required = false) int pageSize) {
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "desc", required = false) String sortDir) {
 
-        return new ResponseEntity<>(service.getAllPosts(pageNo, pageSize), HttpStatus.OK);
+        return new ResponseEntity<>(service.getAllPosts(pageNo, pageSize, sortBy, sortDir), HttpStatus.OK);
     }
 
     @PostMapping

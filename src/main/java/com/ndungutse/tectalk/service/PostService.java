@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.ndungutse.tectalk.dto.PostDto;
@@ -21,8 +22,13 @@ public class PostService {
     private PostRepository repository;
 
     // Get All Posts
-    public PostsResponse getAllPosts(int pageNo, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+    public PostsResponse getAllPosts(int pageNo, int pageSize, String sortBy, String sortDIr) {
+
+        Sort sort = sortDIr.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        // Create pageable instance
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
 
         // Page Content object
         Page<Post> posts = repository.findAll(pageable);
