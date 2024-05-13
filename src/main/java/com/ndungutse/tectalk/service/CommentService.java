@@ -1,5 +1,8 @@
 package com.ndungutse.tectalk.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,20 @@ public class CommentService {
     @Autowired
     private PostRepository postRepository;
 
+    // Get all comments
+    public List<CommentDto> getComments(long postId) {
+        // Find Post
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+
+        // Get all comments
+        List<Comment> comments = repository.getCommentsByPostId(post.getId());
+
+        // return comments.stream().map(this::mapToDto).collect(Collectors.toList());
+        return comments.stream().map(comment -> mapToDto(comment)).collect(Collectors.toList());
+    }
+
+    // Create a comment
     public CommentDto createComment(long postId, CommentDto commentDto) {
         Comment comment = mapToComment(commentDto);
 

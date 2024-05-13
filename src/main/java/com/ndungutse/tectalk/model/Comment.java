@@ -1,7 +1,6 @@
 package com.ndungutse.tectalk.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,8 +19,9 @@ public class Comment {
     private String email;
     private String body;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "post_id", nullable = false) // Used to Specify foreign key
+
     private Post post;
 
     public Comment() {
