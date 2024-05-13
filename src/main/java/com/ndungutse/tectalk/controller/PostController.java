@@ -37,7 +37,6 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
-        System.out.println(postDto);
         PostDto postResponse = service.createPost(postDto);
         return new ResponseEntity<>(postResponse, HttpStatus.CREATED);
     }
@@ -56,7 +55,6 @@ public class PostController {
     @DeleteMapping("{id}")
     public ResponseEntity<String> deletePost(@PathVariable(name = "id") Long id) {
         service.deletePostById(id);
-
         return new ResponseEntity<>("Post Deleted Successfully~", HttpStatus.NO_CONTENT);
     }
 
