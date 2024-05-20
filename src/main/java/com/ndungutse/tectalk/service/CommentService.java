@@ -93,6 +93,20 @@ public class CommentService {
 
     }
 
+    // Delete Comment
+    public void deleteCommentById(long postId, long commentId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "Id", postId));
+        Comment comment = repository.findById(commentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
+
+        if (!comment.getPost().getId().equals(post.getId())) {
+            throw new BlogApiException(HttpStatus.BAD_REQUEST, "Comment does not belong to the post");
+        }
+
+        repository.delete(comment);
+    }
+
     // Map Comment to CommentDto
     private CommentDto mapToDto(Comment comment) {
         CommentDto commentDto = new CommentDto();
