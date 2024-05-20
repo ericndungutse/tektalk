@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.ndungutse.tectalk.dto.CommentDto;
+import com.ndungutse.tectalk.exception.BlogApiException;
 import com.ndungutse.tectalk.exception.ResourceNotFoundException;
 import com.ndungutse.tectalk.model.Comment;
 import com.ndungutse.tectalk.model.Post;
@@ -53,6 +55,21 @@ public class CommentService {
 
         // Return comment dto
         return mapToDto(newComment);
+    }
+
+    // Get Comment by Id
+    public CommentDto getCommentById(long postId, long commentId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+        Comment comment = repository.findById(commentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
+
+        if (!comment.getPost().getId().equals(post.getId())) {
+            throw new BlogApiException(HttpStatus.BAD_REQUEST, "Comment does not belong to the post");
+        }
+
+        return mapToDto(comment);
+
     }
 
     // Map Comment to CommentDto
