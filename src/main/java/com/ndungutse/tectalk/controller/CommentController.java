@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +44,17 @@ public class CommentController {
         CommentDto commentDto = service.getCommentById(postId, commentId);
 
         return new ResponseEntity<>(commentDto, HttpStatus.OK);
+    }
+
+    // Update Comment
+    @PutMapping("/posts/{postId}/comments/{commentId}")
+    public ResponseEntity<CommentDto> updateCommentByIDEntityd(
+            @PathVariable long postId,
+            @PathVariable long commentId,
+            @RequestBody CommentDto commentDto) {
+        CommentDto updaCommentDto = service.updateComment(postId, commentId, commentDto);
+
+        return new ResponseEntity<>(updaCommentDto, HttpStatus.OK);
     }
 
 }

@@ -72,6 +72,27 @@ public class CommentService {
 
     }
 
+    // Update Comment by id
+    public CommentDto updateComment(long postId, long commentId, CommentDto commentDto) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+        Comment comment = repository.findById(commentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
+
+        if (!comment.getPost().getId().equals(post.getId())) {
+            throw new BlogApiException(HttpStatus.BAD_REQUEST, "Comment does not belong to the post");
+        }
+
+        comment.setBody(commentDto.getBody());
+        comment.setEmail(commentDto.getEmail());
+        comment.setName(commentDto.getName());
+
+        Comment updatedComment = repository.save(comment);
+
+        return mapToDto(updatedComment);
+
+    }
+
     // Map Comment to CommentDto
     private CommentDto mapToDto(Comment comment) {
         CommentDto commentDto = new CommentDto();
