@@ -13,39 +13,39 @@ import com.ndungutse.tectalk.dto.ErrorDetails;
 // One that send errors to the client
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    // Handle Specific Exception
-    // THis @ used to handle specific errors
-    @ExceptionHandler(ResourceNotFoundException.class)
-    private ResponseEntity<ErrorDetails> handleResourceNotFound(
-            ResourceNotFoundException exception,
-            WebRequest webRequest) {
+        // Handle Specific Exception
+        // THis @ used to handle specific errors
+        @ExceptionHandler(ResourceNotFoundException.class)
+        private ResponseEntity<ErrorDetails> handleResourceNotFound(
+                        ResourceNotFoundException exception,
+                        WebRequest webRequest) {
 
-        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
-                webRequest.getDescription(false));
+                ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+                                webRequest.getDescription(false));
 
-        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
-    }
+                return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+        }
 
-    @ExceptionHandler(BlogApiException.class)
-    private ResponseEntity<ErrorDetails> handleApiExceptions(
-            BlogApiException exception,
-            WebRequest webRequest) {
+        @ExceptionHandler(BlogApiException.class)
+        private ResponseEntity<ErrorDetails> handleApiExceptions(
+                        BlogApiException exception,
+                        WebRequest webRequest) {
 
-        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
-                webRequest.getDescription(false));
-        return new ResponseEntity<>(errorDetails, exception.getStatus());
-    }
+                ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+                                webRequest.getDescription(false));
+                return new ResponseEntity<>(errorDetails, exception.getStatus());
+        }
 
-    // Handle global exceptions: Any other kind of exception not handled above
-    @ExceptionHandler(Exception.class)
-    private ResponseEntity<ErrorDetails> handleGlobalException(
-            Exception exception,
-            WebRequest webRequest) {
-        ErrorDetails errorDetails = new ErrorDetails(new Date(), "Internal server error",
-                webRequest.getDescription(false));
+        // Handle global exceptions: Any other kind of exception not handled above
+        @ExceptionHandler(Exception.class)
+        private ResponseEntity<ErrorDetails> handleGlobalException(
+                        Exception exception,
+                        WebRequest webRequest) {
+                ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+                                webRequest.getDescription(false));
 
-        // Log the excetion for debugging and send 500 server error
+                // Log the excetion for debugging and send 500 server error
 
-        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+                return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 }

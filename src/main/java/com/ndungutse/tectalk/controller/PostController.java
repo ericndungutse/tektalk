@@ -18,6 +18,8 @@ import com.ndungutse.tectalk.dto.PostsResponse;
 import com.ndungutse.tectalk.service.PostService;
 import com.ndungutse.tectalk.utils.AppConstants;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("api/v1/posts")
 public class PostController {
@@ -36,7 +38,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
+    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto) {
         PostDto postResponse = service.createPost(postDto);
         return new ResponseEntity<>(postResponse, HttpStatus.CREATED);
     }
@@ -47,7 +49,7 @@ public class PostController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto,
+    public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto,
             @PathVariable(name = "id") Long id) {
         return new ResponseEntity<>(service.updatePost(postDto, id), HttpStatus.OK);
     }
