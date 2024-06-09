@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ndungutse.tectalk.dto.CommentDto;
 import com.ndungutse.tectalk.service.CommentService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("api/v1/")
 public class CommentController {
@@ -32,7 +34,7 @@ public class CommentController {
     @PostMapping("/posts/{postId}/comments")
     public ResponseEntity<CommentDto> createComment(
             @PathVariable long postId,
-            @RequestBody CommentDto commentDto) {
+            @Valid @RequestBody CommentDto commentDto) {
 
         System.out.println("*********" + "commentDto");
 
@@ -52,7 +54,7 @@ public class CommentController {
     public ResponseEntity<CommentDto> updateCommentByIDEntityd(
             @PathVariable long postId,
             @PathVariable long commentId,
-            @RequestBody CommentDto commentDto) {
+            @Valid @RequestBody CommentDto commentDto) {
         CommentDto updaCommentDto = service.updateComment(postId, commentId, commentDto);
 
         return new ResponseEntity<>(updaCommentDto, HttpStatus.OK);
