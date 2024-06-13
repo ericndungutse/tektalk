@@ -1,25 +1,12 @@
-package com.ndungutse.tectalk.model;
+package com.ndungutse.tectalk.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+public class UserDto {
 
-@Entity
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = { "email" }))
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
     // private String username;
     private String email;
     private String password;
-
-    public User() {
-    }
 
     public long getId() {
         return id;
@@ -60,5 +47,4 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
 }
