@@ -11,6 +11,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.ndungutse.tectalk.dto.CustomUserDetailService;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +24,7 @@ public class JwtFilterChain extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private CustomUserDetailService userDetailsService;
 
     @Override
     // THis is a custom Filter
@@ -35,19 +37,22 @@ public class JwtFilterChain extends OncePerRequestFilter {
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 // Extract Username
                 String username = jwtUtils.getUserNameFromToken(jwt);
+
                 // Get User from datasource
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
                 // Construct Authentication object that will e in Securitycontect
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
+                        userDetails, userDetails.getAuthorities());
 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                System.out.println("JJJJJJJJJJJJJJJJJJJJJJJJJJ" + authentication);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 
         } catch (Exception e) {
-            logger.error("Cannot set user authentication: {}", e);
+            System.out.println("Cannot set user authentication: {}" + e);
         }
 
         // Continue filter chain as usual: Other filters

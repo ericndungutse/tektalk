@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.ndungutse.tectalk.dto.UserDto;
 import com.ndungutse.tectalk.model.User;
+
 import com.ndungutse.tectalk.repository.UserRepository;
 
 @Service
@@ -17,19 +18,21 @@ public class UserService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    // Create Post
+    // Create
     public UserDto createUser(UserDto userDto) {
         // Convert DTO to User
         User user = mapToUser(userDto);
 
-        // Persist into the db
         User newUser = repository.save(user);
-
         // Convert Post to DTO
         UserDto userResponse = mapToDto(newUser);
-
         return userResponse;
     }
+
+    // // signin
+    // public SigninResponse singin(SigninRequest, credentials){
+
+    // }
 
     // Mappers
     private User mapToUser(UserDto userDto) {
@@ -37,6 +40,7 @@ public class UserService {
         user.setEmail(userDto.getEmail());
         user.setName(userDto.getName());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setRole("USER");
         return user;
     }
 
@@ -45,6 +49,7 @@ public class UserService {
         userDto.setId(user.getId());
         userDto.setName(user.getName());
         userDto.setEmail(user.getEmail());
+        // userDto.setRole(user.getRole());
         return userDto;
 
     }

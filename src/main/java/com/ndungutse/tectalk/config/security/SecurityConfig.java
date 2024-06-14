@@ -21,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.ndungutse.tectalk.config.jwt.JwtEntryPoint;
 import com.ndungutse.tectalk.config.jwt.JwtFilterChain;
+import com.ndungutse.tectalk.dto.CustomUserDetailService;
 
 @Configuration
 @EnableWebSecurity
@@ -45,6 +46,8 @@ public class SecurityConfig {
                 request -> request
                         .requestMatchers("/api/v1/users/signup")
                         .permitAll()
+                        .requestMatchers("/api/v1/users/signin")
+                        .permitAll()
                         .anyRequest().authenticated());
 
         // Disable CSRF for h2-console
@@ -62,11 +65,9 @@ public class SecurityConfig {
 
     }
 
-    // NOT NEEDED WHEN I HAVE ENTITY
     @Bean
-    public UserDetailsService userDetailsService() {
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-        return jdbcUserDetailsManager;
+    public CustomUserDetailService userDetailsService() {
+        return new CustomUserDetailService();
     }
 
     @Bean

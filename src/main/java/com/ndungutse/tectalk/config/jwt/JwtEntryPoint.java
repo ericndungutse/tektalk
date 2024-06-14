@@ -22,6 +22,7 @@ public class JwtEntryPoint implements AuthenticationEntryPoint {
             AuthenticationException authException) throws IOException, ServletException {
         response.setContentType(org.springframework.http.MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        System.out.println("********************** EROR" + authException);
 
         final Map<String, Object> body = new HashMap<>();
 
