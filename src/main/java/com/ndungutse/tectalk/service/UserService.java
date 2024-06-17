@@ -40,7 +40,7 @@ public class UserService {
         user.setEmail(userDto.getEmail());
         user.setName(userDto.getName());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setRole("USER");
+        user.setRole("ROLE_USER");
         return user;
     }
 

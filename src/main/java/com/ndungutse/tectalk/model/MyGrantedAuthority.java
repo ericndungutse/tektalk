@@ -11,6 +11,11 @@ public class MyGrantedAuthority implements GrantedAuthority {
     }
 
     @Override
+    public String toString() {
+        return "MyGrantedAuthority [authority=" + authority + "]";
+    }
+
+    @Override
     public String getAuthority() {
         return authority;
     }
